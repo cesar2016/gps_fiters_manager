@@ -45,20 +45,9 @@ class FormaterController extends Controller
 
                 }
                 fclose($handle);
-            }             
-
-            
-            if($nombreOriginal == 'qa_hn.csv'){
-                
-                return $this->compare_HN($data);
-
-            }else{
-
-                return $this->compare_filters($data);
-            }           
+            }         
 
             return $this->compare_filters($data);
-
                 
 
         } else {
@@ -72,7 +61,8 @@ class FormaterController extends Controller
 
         $cluster_and = ["ecuador", "chile", "peru"];
         $cluster_cen = ["elsalvador", 'salvador, "nicaragua", "guatemala", "costarica"'];
-        $cluster_dom = ["dominicana"];        
+        $cluster_dom = ["dominicana"];
+        $cluster_cen_HN = ["default", "honduras"];        
         
 
         if (in_array($country, $cluster_and)) {                
@@ -84,35 +74,40 @@ class FormaterController extends Controller
         if (in_array($country, $cluster_dom)) {
             return 'dom';
         }
+        if (in_array($country, $cluster_cen_HN)) {
+            return 'cen_hn';
+        }
 
 
+    }
+
+    // FUncion para estandarizar los string
+    function normalizeString($string) {
+        // Convertir a minúsculas
+        $stringMinuscula = strtolower($string);
+    
+        // Eliminar espacios en blanco
+        $stringSinEspacios = str_replace(' ', '', $stringMinuscula);
+    
+        return $stringSinEspacios;
     }
 
 
     public function compare_filters($filters){
         
         
-        $comparations = [];         
-
-        // FUncion para estandarizar los string
-        function normalizeString($string) {
-            // Convertir a minúsculas
-            $stringMinuscula = strtolower($string);
-        
-            // Eliminar espacios en blanco
-            $stringSinEspacios = str_replace(' ', '', $stringMinuscula);
-        
-            return $stringSinEspacios;
-        }
+        $comparations = [];    
          
         for ($i= 0; $i < count($filters) ; $i++) { 
             
             $e = 0;
-            $cluster = $this->defineCluster( normalizeString($filters[$e][0]) ); 
-            $pais = normalizeString( $filters[$i][0] );  
+            $cluster = $this->defineCluster( $this->normalizeString($filters[$e][0]) ); 
+            $pais = $this->normalizeString( $filters[$i][0] );  
             
-            echo $cluster;
            
+            if( $cluster == 'cen_hn')
+                return $this-> compare_HN($filters);
+
             if( $cluster == 'and')
                 $url_api = "https://aws-us-east-2-andina-cvideo-mfw-ott-uat.clarovideo.net/services/epg/version_config?device_type=ott&device_category=web&device_model=web&device_manufacturer=generic&authpn=amco&authpt=12e4i8l6a581a&region=".strtolower($pais)."&api_version=5.93";
 
@@ -167,7 +162,7 @@ class FormaterController extends Controller
     public function compare_HN($filters)
     
     {
-        $comparations = [];
+        $comparations = [];         
 
         for ($i= -1; $i < 11 ; $i++) { 
 

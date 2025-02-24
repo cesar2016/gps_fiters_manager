@@ -51,9 +51,17 @@
                         <tbody  align="center">
                             @foreach ($comparations as $zoneData)
 
+                            @php
+                                $name_zone = str_replace('ZONA_', '', array_keys($zoneData)[0]) == 'default' ? 'default ( HN )' 
+                                : str_replace('ZONA_', '', array_keys($zoneData)[0]);
+                            @endphp
                              
                                 <tr>
-                                    <td scope="col" > {{ str_replace('ZONA_', '', array_keys($zoneData)[0]) }}</td>
+                                    <td scope="col" > {{ 
+
+                                        $name_zone;
+                                        
+                                        }}</td>
                                     @foreach ($zoneData as $zone => $platformData)
                                         
                                             @foreach ($platformData as $platform => $value)

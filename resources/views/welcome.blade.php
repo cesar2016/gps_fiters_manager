@@ -53,9 +53,7 @@
                         <ul>
                             <li> 1- Seleccionar y copiar completo tal cual el cuadro de valores del SIC </li>
                             <li> 2- Pegar en drive, excelSheet, etc </li>
-                            <li> 3- Guardar en formato CSV y nombrar solo para HONDURAS con el nombre:
-                                <strong>qa_hn.csv</strong>
-                             </li> 
+                            <li> 3- Guardar en formato .CSV                             
                             <li> 4- Subir y esperar que finalice el proseso de carga </li>
                         </ul>
                     </p>

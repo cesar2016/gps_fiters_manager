@@ -11,5 +11,4 @@ Route::get('/', function () {
 Route::post('/formater',[FormaterController::class, 'formater'])->name('formater');
 //Route::get('/testing',[FormaterController::class, 'testing'])->name('testing');
 
-
 Route::get('/test',[TestController::class, 'test'])->name('test');
